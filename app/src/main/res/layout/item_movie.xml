@@ -35,7 +35,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="594dp"
         android:ellipsize="end"
         android:maxLines="5"
         android:text="Jom and Neenuh are back- and this time, things are about to get s t i n k y. Jom wants steak for lunch but Neenuh is set on corn dogs... how will they make it through this? Stay tuned to find out."

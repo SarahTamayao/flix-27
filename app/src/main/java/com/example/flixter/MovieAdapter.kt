@@ -6,6 +6,7 @@ import android.view.TextureView
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 // Create MovieAdapter class constructor that takes a context and a non-mutable list of movies
@@ -14,7 +15,6 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
 
     // Adapter is an abstract class, so these need to be implemented
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
         val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)
         return ViewHolder(view)
     }
@@ -31,7 +31,7 @@ class MovieAdapter(private val context: Context, private val movies: List<Movie>
     // Get references and populate it with the correct data in the movie
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val ivPoster = itemView.findViewById<TextView>(R.id.ivPoster)
+        private val ivPoster = itemView.findViewById<ImageView>(R.id.ivPoster)
         private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
         private val tvOverview = itemView.findViewById<TextView>(R.id.tvOverview)
 
