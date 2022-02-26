@@ -17,6 +17,12 @@ private const val NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_play
 class MainActivity : AppCompatActivity() {
 
     private val movies = mutableListOf<Movie>()
+    // 1. Define a data model class as the data source - DONE
+    // 2. Add the RecyclerView to the layout - DONE
+    // 3. Create a custom row layout XML file to visualize the item
+    // 4. Create an Adapter and ViewHolder to render the item
+    // 5. Bind the adapter to the data source to populate the RecyclerView
+    // 6. Bind a layout manager to the RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
