@@ -1,13 +1,20 @@
 package com.example.flixter
 
+import android.os.Parcelable
+import androidx.versionedparcelable.ParcelField
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import org.json.JSONArray
+
+@Parcelize
 
 data class Movie (
     val movieID: Int,
     private val posterPath: String, // Made private since we don't ever actually need to use it
     val title: String,
     val overview: String,
-) {
+) : Parcelable {
+    @IgnoredOnParcel
     val posterImageUrl = "https://image.tmdb.org/t/p/w342/$posterPath" // This was hard-coded from the hints page
     companion object {
         fun fromJsonArray(movieJsonArray: JSONArray): List<Movie> {
