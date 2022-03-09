@@ -1,15 +1,16 @@
 package com.example.flixter
 
 import android.os.Parcelable
-import androidx.versionedparcelable.ParcelField
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import org.json.JSONArray
 
-@Parcelize
+// This class is meant to hold everything that a movie is
 
+@Parcelize
 data class Movie (
     val movieID: Int,
+    val voteAverage: Double,
     private val posterPath: String, // Made private since we don't ever actually need to use it
     val title: String,
     val overview: String,
@@ -24,6 +25,7 @@ data class Movie (
                 movies.add(
                     Movie(
                         movieJson.getInt("id"),
+                        movieJson.getDouble("vote_average"),
                         movieJson.getString("poster_path"),
                         movieJson.getString("title"),
                         movieJson.getString("overview")
