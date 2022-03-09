@@ -6,12 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.RatingBar
 import android.widget.TextView
+import com.codepath.asynchttpclient.AsyncHttpClient
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
+import okhttp3.Headers
 
 private const val YOUTUBE_API_KEY = "AIzaSyD6Y9aoBJblxE0oTd9EKAMQZiQVQPJH-f0"
+private const val TRAILERS_URL = "https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
 private const val TAG = "DetailActivity"
 class DetailActivity : YouTubeBaseActivity() {
 
@@ -40,6 +44,38 @@ class DetailActivity : YouTubeBaseActivity() {
         // Get the rating of the movie
         ratingBar.rating = movie.voteAverage.toFloat() // Downcast since rating takes a float, but we give it a double
 
+        val client = AsyncHttpClient()
+        client.get(TRAILERS_URL.format(movie.movieID), object: JsonHttpResponseHandler() {
+            override fun onFailure(
+                statusCode: Int,
+                headers: Headers?,
+                response: String?,
+                throwable: Throwable?
+            ) {
+                Log.i(TAG, "onFailure $statusCode")
+
+            }
+
+            override fun onSuccess(statusCode: Int, headers: Headers?, json: JSON) { // Null check not applicable because this is onsuccess, we know we'll get a json object
+                Log.i(TAG, "onSuccess")
+                // Get the actual YouTube id out of the json object
+                val results = json.jsonObject.getJSONArray("results")
+                if (results.length() == 0) {
+                    Log.w(TAG, "No movie trailers found.")
+                }
+                val movieTrailerJson = results.getJSONObject(0)
+                val youtubeKey= movieTrailerJson.getString("key")
+                // Play the youtube video with this trailer specified
+                initializeYoutube(youtubeKey) // Function that only runs if we get the right api call json back
+
+            }
+
+        })
+
+
+    }
+
+    private fun initializeYoutube(youtubeKey: String) {
         ytPlayerView.initialize(YOUTUBE_API_KEY, object: YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(
                 provider: YouTubePlayer.Provider?,
@@ -47,7 +83,7 @@ class DetailActivity : YouTubeBaseActivity() {
                 p2: Boolean
             ) {
                 Log.i(TAG, "onInitializationSuccess")
-                player?.cueVideo("5xVh-7ywKpE")
+                player?.cueVideo(youtubeKey)
             }
 
             override fun onInitializationFailure(
